@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import random
 
-# Function to fetch population data
+# Function to fetch population data from eurostat API
 def fetch_population_data():
     url = "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/tps00001?format=JSON&time=2023&geo=BE&geo=BG&geo=CZ&geo=DK&geo=DE&geo=EE&geo=IE&geo=EL&geo=ES&geo=FR&geo=HR&geo=IT&geo=CY&geo=LV&geo=LT&geo=LU&geo=HU&geo=MT&geo=NL&geo=AT&geo=PL&geo=PT&geo=RO&geo=SI&geo=SK&geo=FI&geo=SE&indic_de=JAN&lang=en"
     response = requests.get(url)
@@ -63,7 +63,7 @@ if st.session_state.data:
             st.error("Incorrect!")
         st.write(f"The correct population is {st.session_state.correct_answer}.")
 
-    if st.button("Next Question"):
+if st.button("Next Question"):
         set_new_question()  # This resets the question, options, and correct answer
 else:
     st.error("Unable to load population data.")
