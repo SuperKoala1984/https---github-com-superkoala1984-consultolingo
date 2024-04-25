@@ -16,7 +16,7 @@ def fetch_population_data():
     else:
         st.error(f"Failed to retrieve data: {response.status_code}")
         return {}
-    
+
 def generate_question(population_data):
     correct_country, correct_population = random.choice(list(population_data.items()))
     incorrect_answers = set()
@@ -57,13 +57,16 @@ if st.session_state.data:
     user_choice = st.radio("Choose the correct answer:", option_indices, key='user_choice')
 
     if st.button("Submit"):
+        st.session_state.submitted = True  # Track that submit was pressed
         if int(user_choice.split(': ')[0]) == st.session_state.options.index(st.session_state.correct_answer) + 1:
             st.success("Correct!")
         else:
             st.error("Incorrect!")
         st.write(f"The correct population is {st.session_state.correct_answer}.")
 
-if st.button("Next Question"):
-        set_new_question()  # This resets the question, options, and correct answer
+    if 'submitted' in st.session_state and st.session_state.submitted:
+        if st.button("Next Question"):
+            set_new_question()  # This resets the question, options, and correct answer
+            st.session_state.submitted = False  # Reset the submitted flag
 else:
     st.error("Unable to load population data.")
