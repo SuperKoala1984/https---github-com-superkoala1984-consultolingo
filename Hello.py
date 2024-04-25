@@ -42,13 +42,16 @@ def set_new_question():
     st.session_state.question, st.session_state.options, st.session_state.correct_answer = generate_question(st.session_state.data)
 
 st.title('Population Quiz')
+
 if 'data' not in st.session_state:
     st.session_state.data = fetch_population_data()
 
-if 'question' not in st.session_state or 'options' not in st.session_state or 'correct_answer' not in st.session_state:
-    set_new_question()
-
+# Main block to handle quiz setup and response
 if st.session_state.data:
+    if 'init' not in st.session_state or st.session_state.init:
+        set_new_question()
+        st.session_state.init = False  # Flag to not reset question on each run, unless "Next Question" is pressed
+
     st.subheader(st.session_state.question)
     option_indices = [f"{idx + 1}: {option}" for idx, option in enumerate(st.session_state.options)]
     user_choice = st.radio("Choose the correct answer:", option_indices, key='user_choice')
@@ -59,7 +62,8 @@ if st.session_state.data:
         else:
             st.error("Incorrect!")
         st.write(f"The correct population is {st.session_state.correct_answer}.")
-        if st.button("Next Question"):
-            set_new_question()
+
+    if st.button("Next Question"):
+        set_new_question()  # This resets the question, options, and correct answer
 else:
     st.error("Unable to load population data.")
