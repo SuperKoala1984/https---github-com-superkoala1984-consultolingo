@@ -95,9 +95,9 @@ def display_results():
     st.write(f"Final Score: {st.session_state.score}/10")
     if st.button("Restart Quiz"):
         st.session_state.questions = None # Explicitly reset the necessary variables
-        st.experimental_rerun() # Rerun the app to reinitialize the state
+        st.experimental_rerun() # Rerun the app to reinitialize the state 
         st.session_state.question_count = 0
-        st.session_state.score = 0  
+        st.session_state.score = 0
 
 if __name__ == "__main__":
     main()
