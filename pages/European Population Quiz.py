@@ -46,7 +46,7 @@ def generate_questions(population_data):
 
 # Main block for the Streamlit app
 def main():
-    st.title('Population Quiz')
+    st.title('European Population Quiz')
     if 'questions' not in st.session_state:
         population_data = fetch_population_data()
         st.session_state.questions = generate_questions(population_data)
@@ -94,8 +94,10 @@ def display_results():
     st.pyplot(fig1)
     st.write(f"Final Score: {st.session_state.score}/10")
     if st.button("Restart Quiz"):
-        st.session_state.questions = None
-        st.experimental_rerun()
+        st.session_state.questions = None # Explicitly reset the necessary variables
+        st.experimental_rerun() # Rerun the app to reinitialize the state
+        st.session_state.question_count = 0
+        st.session_state.score = 0  
 
 if __name__ == "__main__":
     main()
