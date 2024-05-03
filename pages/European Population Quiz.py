@@ -1,4 +1,3 @@
-import time
 import streamlit as st
 import requests
 import random
@@ -44,10 +43,27 @@ def generate_questions(population_data):
         questions.append((question, options, correct_population))
     return questions
 
-# Main block for the Streamlit app
+def display_results():
+    st.subheader("Quiz Results")
+    correct_count = st.session_state.score
+    incorrect_count = 10 - correct_count
+    labels = ['Correct Answers', 'Incorrect Answers']
+    sizes = [correct_count, incorrect_count]
+    explode = (0.1, 0)  # explode 1st slice
+    fig1, ax1 = plt.subplots()
+    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%', startangle=90)
+    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    st.pyplot(fig1)
+    st.write(f"Final Score: {st.session_state.score}/10")
+
+    if st.button("Restart Quiz"):
+        st.session_state.clear()  # Clears the entire session state
+        st.experimental_rerun()  # Rerun the app to reinitialize the state
+
 def main():
     st.title('European Population Quiz')
-    if 'questions' not in st.session_state:
+
+    if 'questions' not in st.session_state or not st.session_state.questions:
         population_data = fetch_population_data()
         st.session_state.questions = generate_questions(population_data)
         st.session_state.question_count = 0
@@ -71,33 +87,15 @@ def main():
 
                     st.session_state.question_count += 1
                     if st.session_state.question_count < 10:
-                        next_button = st.button("Next Question")
-                        if next_button:
-                            st.experimental_rerun()
+                        st.button("Next Question")  # This button does nothing but trigger rerender.
                     else:
-                        st.experimental_rerun()  # Final results page
+                        st.session_state.show_results = True
+                        st.experimental_rerun()
                 else:
                     st.error("Please choose an answer to proceed!")
-        else:
+        elif st.session_state.show_results:
             display_results()
-
-def display_results():
-    st.subheader("Quiz Results")
-    correct_count = st.session_state.score
-    incorrect_count = 10 - correct_count
-    labels = ['Correct Answers', 'Incorrect Answers']
-    sizes = [correct_count, incorrect_count]
-    explode = (0.1, 0)  # explode 1st slice
-    fig1, ax1 = plt.subplots()
-    ax1.pie(sizes, explode=explode, labels=labels, autopct='%1.1f%%', startangle=90)
-    ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    st.pyplot(fig1)
-    st.write(f"Final Score: {st.session_state.score}/10")
-    if st.button("Restart Quiz"):
-        st.session_state.questions = None # Explicitly reset the necessary variables
-        st.experimental_rerun() # Rerun the app to reinitialize the state 
-        st.session_state.question_count = 0
-        st.session_state.score = 0
 
 if __name__ == "__main__":
     main()
+
