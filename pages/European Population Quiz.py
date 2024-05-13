@@ -27,13 +27,13 @@ def generate_questions(population_data):
         while len(incorrect_answers) < 3: # 3/4 Auswahlmöglichkeiten sollen falsch sein, also werden solange keine 3 falschen Antworten existieren, solche generiert
             method = random.choice(['percent', 'fixed', 'factor']) # falsche Antworten werden zufällig durch 3 verschiedene Methoden generiert, welche unten definiert sind
             if method == 'percent':
-                adjustment = random.choice([0.9, 0.95, 1.05, 1.1]) # Multiplikator wird zufällig gewählt
+                adjustment = random.choice([0.7, 0.85, 1.25, 1.3]) # Multiplikator wird zufällig gewählt
                 new_population = int(correct_population * adjustment) # Generierung falscher Antwort anhand von prozentualer Abweichung
             elif method == 'fixed':
-                adjustment = random.randint(100000, 500000) # Betrag wird zufällig gewählt
+                adjustment = random.randint(300000, 500000) # Betrag wird zufällig gewählt
                 new_population = correct_population + random.choice([-1, 1]) * adjustment # Generierung falscher Antwort indem ein fixer Betrag addiert oder subtrahiert wird
             elif method == 'factor':
-                adjustment = random.choice([0.85, 0.9, 0.95, 1.05, 1.1, 1.2]) # Multiplikator wird zufällig gewählt
+                adjustment = random.choice([0.6, 0.7, 0.8, 1.15, 1.2, 1.35]) # Multiplikator wird zufällig gewählt
                 new_population = int(correct_population * adjustment) # Generierung falscher Antwort durch Multiplikation mit einem Multiplikationsfaktor
             if new_population != correct_population:
                 incorrect_answers.add(new_population)
