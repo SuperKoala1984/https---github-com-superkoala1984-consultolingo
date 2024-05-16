@@ -25,7 +25,7 @@ def generate_questions(population_data):
         correct_country, correct_population = random.choice(list(population_data.items()))
         incorrect_answers = set()
         while len(incorrect_answers) < 3: # 3/4 Auswahlmöglichkeiten sollen falsch sein, also werden solange keine 3 falschen Antworten existieren, solche generiert
-            method = random.choice(['percent', 'fixed', 'factor']) # falsche Antworten werden zufällig durch 3 verschiedene Methoden generiert, welche unten definiert sind
+            method = random.choice(['percent', 'fixed', 'factor']) # falsche Antworten werden zufällig durch 3 verschiedene Methoden generiert, welche unten definiert sind (Source: für das Erstellen der drei Methdoden wurde ChatGPT als Unterstützung verwendet)
             if method == 'percent':
                 adjustment = random.choice([0.7, 0.85, 1.25, 1.3]) # Multiplikator wird zufällig gewählt
                 new_population = int(correct_population * adjustment) # Generierung falscher Antwort anhand von prozentualer Abweichung
@@ -98,3 +98,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+#Bemerkung betreffend der Benutzung von AI: ChatGPT wurden Fragen basieren auf dem eigens erstellten Code gestellt (z.B. betreffend der Behebung von Fehlern). Der Code enthält keine eigenständig von ChatGPT erstellten Teile.
